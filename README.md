@@ -1,2 +1,3 @@
-# othello-java-sae-1.01
+# READ-ME
 SAE 1.01 IUT Vannes
+Va metre ton nom dans la classe Othello.java
