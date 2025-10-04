@@ -7,7 +7,6 @@
 class Othello{
 	void principal(){
 		int[][] tab = tabJeu(8);
-		tab[0][0] = 2;
 		afficheTabJeu(tab);
 	}
 	
@@ -31,7 +30,18 @@ class Othello{
 	 */
 	 
 	void afficheTabJeu (int[][] tab){
+		
+		System.out.print("\n");
+		System.out.print("\t  ");
+		
 		for (int i = 0; i < tab.length; i++){
+			System.out.print(" " + (i+1) );
+		}
+		
+		System.out.print("\n");
+		
+		for (int i = 0; i < tab.length; i++){
+			System.out.print("\t" + (i+1) +" ");
 			for (int y = 0; y < tab.length; y++){
 				if ( tab[i][y] == 0 ){
 					System.out.print("| ");
@@ -41,7 +51,7 @@ class Othello{
 					System.out.print("|x");
 				}
 				
-				if ( y == tab[i].length-1 ){
+				if ( y == tab[y].length-1 ){
 					System.out.print("|\n");
 				}
 			}
