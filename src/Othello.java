@@ -6,7 +6,7 @@
 
 class Othello{
 	void principal(){
-		int[][] tab = tabJeu(16);
+		int[][] tab = tabJeu(8);
 		demarreJeu(tab);
 	}
 	
@@ -15,6 +15,10 @@ class Othello{
 	 * @param int[][] tab : taille de notre matrice 
 	 */
 	void demarreJeu (int [][] tab){
+		tab[(tab.length-1)/2][(tab.length-1)/2] = 1;
+		tab[(tab.length-1)/2][(tab.length)/2] = 2;
+		tab[(tab.length)/2][(tab.length-1)/2] = 2;
+		tab[(tab.length)/2][(tab.length)/2] = 1;
 		
 		afficheTabJeu(tab);
 	}
@@ -23,7 +27,7 @@ class Othello{
 	/**
 	 * Créer un matrice en size * size pour le jeu d'Othello
 	 * @param int size : taille de notre matrice 
-	 * @return
+	 * @return tab : matrice en size*size
 	 */
 	int[][] tabJeu (int size){
 		while (!(size >= 4 && size <= 16 && size % 2 == 0)){
@@ -88,5 +92,17 @@ class Othello{
 				
 			}
 		}
+	}
+	
+	/**
+	 * La case a jouer par un des 2 joueurs
+	 * @param int[] caseAJouer : possiblité case a jouer
+	 * @return case : case a jouer
+	 */
+	 int recupereCase (int[] caseAJouer){
+		 int caseJouer = 0;
+		 
+		 
+		return caseJouer;
 	}
 }
