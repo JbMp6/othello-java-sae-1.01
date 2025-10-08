@@ -93,4 +93,12 @@ class Othello{
 			}
 		}
 	}
+	
+	/**
+	* 
+	* @param
+	*/
+	int[][] (int[][] tabjeu, int test) {
+		
+	}
 }
