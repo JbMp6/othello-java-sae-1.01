@@ -6,7 +6,7 @@
 
 class Othello{
 	void principal(){
-		int[][] tab = tabJeu(8);
+		int[][] tab = tabJeu(16);
 		demarreJeu(tab);
 	}
 	
@@ -79,7 +79,7 @@ class Othello{
 		
 		for (int i = 0; i < tab.length; i++){
 			if ( i < 9){
-				System.out.print("\t" + (i+1) +"  ");
+				System.out.print("\t" + (i+1) +" ");
 			}else{
 				System.out.print("\t" + (i+1) +" ");
 			}
@@ -95,11 +95,40 @@ class Othello{
 					System.out.print("|x ");
 					
 			}
+<<<<<<< HEAD
 					
+=======
+				
+>>>>>>> f28e409752ba7e6e062d5a4e1f62063cc0276fd3
 				if ( y == tab[y].length-1 ){
 					System.out.print("|\n");
 				}
 				
+			}
+		}
+	}
+	
+	/**
+	* Montre quelles cases ont la possibilité d'être joué 
+	* puis demande d'en choisir une
+	* @param 
+	*/
+	
+	int[] reponsesCaseJoue (int[][] casePossibleAJouer){
+		System.out.println("Voici les cases possibles à jouer : ");
+		for (int i=0; i<casePossibleAJouer.length; i++) {
+			System.out.println(casePossibleAJouer[i][0]+", "+casePossibleAJouer[i][1]);
+		}
+		
+		while(true) {
+			int reponseLigne = SimpleInput.getInt("La ligne que vous voulez joué : ");
+			int reponseCase = SimpleInput.getInt("La case que vous voulez joué : ");
+			int[] reponse = {reponseLigne, reponseCase};
+			
+			for (int i=0; i<casePossibleAJouer.length; i++) {
+				if (casePossibleAJouer[i] == reponse) {
+					return reponse;
+				}
 			}
 		}
 	}
