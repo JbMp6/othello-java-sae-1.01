@@ -47,43 +47,34 @@ class Othello{
 		System.out.print("\t   ");
 		
 		for (int i = 0; i < tab.length; i++){
-			System.out.print(" " + (i+1) );
+			if ( i < 9){
+				System.out.print("  " + (i+1) );
+			}else{
+				System.out.print(" " + (i+1) );
+			}
 		}
 		
 		System.out.print("\n");
 		
 		for (int i = 0; i < tab.length; i++){
-			if ( i < 9 ){
+			if ( i < 9){
 				System.out.print("\t" + (i+1) +"  ");
 			}else{
 				System.out.print("\t" + (i+1) +" ");
 			}
 			
 			for (int y = 0; y < tab.length; y++){
+				if ( tab[i][y] == 0 ){
+					System.out.print("|  ");
+					
+				}else if (tab[i][y] == 1){
+					System.out.print("|o ");
+					
+				}else if (tab[i][y] == 2){
+					System.out.print("|x ");
+					
+			}
 				
-				if ( y < 9 ){
-					if ( tab[i][y] == 0 ){
-						System.out.print("| ");
-					
-					}else if (tab[i][y] == 1){
-						System.out.print("|o");
-					
-					}else if (tab[i][y] == 2){
-						System.out.print("|x");
-					
-					}
-				}else{
-					if ( tab[i][y] == 0 ){
-						System.out.print("|  ");
-					
-					}else if (tab[i][y] == 1){
-						System.out.print("|o ");
-					
-					}else if (tab[i][y] == 2){
-						System.out.print("|x ");
-					
-					}
-				}
 				
 				
 				if ( y == tab[y].length-1 ){
