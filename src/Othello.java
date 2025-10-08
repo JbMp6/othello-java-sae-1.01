@@ -93,16 +93,4 @@ class Othello{
 			}
 		}
 	}
-	
-	/**
-	 * La case a jouer par un des 2 joueurs
-	 * @param int[] caseAJouer : possiblité case a jouer
-	 * @return case : case a jouer
-	 */
-	 int recupereCase (int[] caseAJouer){
-		 int caseJouer = 0;
-		 
-		 
-		return caseJouer;
-	}
 }
