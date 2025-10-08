@@ -23,6 +23,27 @@ class Othello{
 		afficheTabJeu(tab);
 	}
 	
+	/**
+	 * Cherche voisins d'une case x, y
+	 * @param x ligne de la case
+	 * @param y position de la case dans la ligne
+	 * @return int[][] matrice des x,y des cases voisines
+	 */
+	int[][] caseVoisin(int x, int y) {
+		int[][] tabVoisin = new int[8][2];
+		
+		tabVoisin[0] = new int[]{x-1, y};
+		tabVoisin[1] = new int[]{x-1, y+1};
+		tabVoisin[2] = new int[]{x, y+1};
+		tabVoisin[3] = new int[]{x+1, y+1};
+		tabVoisin[4] = new int[]{x+1, y};
+		tabVoisin[5] = new int[]{x+1, y-1};
+		tabVoisin[6] = new int[]{x, y-1};
+		tabVoisin[7] = new int[]{x-1, y-1};
+		
+		return tabVoisin;
+	}
+
 	
 	/**
 	 * Créer un matrice en size * size pour le jeu d'Othello
@@ -74,9 +95,7 @@ class Othello{
 					System.out.print("|x ");
 					
 			}
-				
-				
-				
+					
 				if ( y == tab[y].length-1 ){
 					System.out.print("|\n");
 				}
