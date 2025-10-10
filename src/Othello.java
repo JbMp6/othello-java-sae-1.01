@@ -28,6 +28,10 @@ class Othello{
 			afficheTabJeu(tab);
 			
 			int[][] caseA = caseAdverse(touEnCours, tab);
+			int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab);
+			int[] caseJoue = reponsesCaseJoue(caseJouable);
+			
+			placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
 			
 			if (touEnCours == 1){
 				touEnCours = 2;
@@ -100,25 +104,34 @@ class Othello{
 	
 	/**
 	 * Liste les voisins de plusieurs cases
-	 * @param tabAdverse : liste des position des pions adverse
-	 * @return int[][] matrice de tout les x,y des cases voisines
+	 * @param tabAdverse : liste des positions des pions adverses
+	 * @return int[][] matrice de tous les x,y des cases voisines (peut contenir des doublons)
 	 */
 	int[][] listeCaseVoisin(int[][] tabAdverse) {
 		
 		int compt = 0;
-		
-		for ( int i = 0; i < tabAdverse.length; i++){
-			 
-			 int[][] rep = caseVoisin(tabAdverse[i][0], tabAdverse[i][1]);
-			 
-			 compt = compt + rep.length;
+
+		for (int i = 0; i < tabAdverse.length; i++) {
+			int[][] rep = caseVoisin(tabAdverse[i][0], tabAdverse[i][1]);
+			compt += rep.length;
 		}
-		
+
 		int[][] listeVoisin = new int[compt][2];
-		//arrete ici
 		
+		compt = 0;
+
+		for (int i = 0; i < tabAdverse.length; i++) {
+			int[][] rep = caseVoisin(tabAdverse[i][0], tabAdverse[i][1]);
+			for (int j = 0; j < rep.length; j++) {
+				listeVoisin[compt][0] = rep[j][0];
+				listeVoisin[compt][1] = rep[j][1];
+				compt++;
+			}
+		}
+
 		return listeVoisin;
 	}
+
 	
 	/**
 	 * Verifi si les voisin d'une case sont des case jouable
@@ -149,6 +162,17 @@ class Othello{
 				
 		return caseJouable;
 	}
+	
+	/**
+	 * Place une case sur le plateau de jeu
+	 * @param int x : la ligne
+	 * @return int y : la colonne
+	 */
+	 void placeCase(int x, int y, int[][] tab, int joueur){
+		 tab[x][y] = joueur;
+	 }
+		
+	
 
 	
 	/**
@@ -202,12 +226,13 @@ class Othello{
 					
 			}
 
-				if ( y == tab[y].length-1 ){
+				if ( y == tab[i].length-1 ){
 					System.out.print("|\n");
 				}
 				
 			}
 		}
+		System.out.print("\n");
 	}
 	
 	/**
@@ -216,24 +241,26 @@ class Othello{
 	* @param 
 	*/
 	
-	int[] reponsesCaseJoue (int[][] casePossibleAJouer){
-		System.out.println("Voici les cases possibles à jouer : ");
-		for (int i=0; i<casePossibleAJouer.length; i++) {
-			System.out.println(casePossibleAJouer[i][0]+", "+casePossibleAJouer[i][1]);
+	int[] reponsesCaseJoue(int[][] casePossibleAJouer) {
+		System.out.println("Voici les cases possibles à jouer (ligne, colonne) : ");
+		for (int i = 0; i < casePossibleAJouer.length; i++) {
+			System.out.println((casePossibleAJouer[i][0] + 1) + ", " + (casePossibleAJouer[i][1] + 1));
 		}
-		
-		while(true) {
-			int reponseLigne = SimpleInput.getInt("La ligne que vous voulez joué : ");
-			int reponseCase = SimpleInput.getInt("La case que vous voulez joué : ");
-			
-			int[] reponse = {reponseLigne, reponseCase};
-			
-			for (int i=0; i<casePossibleAJouer.length; i++) {
-				if ((casePossibleAJouer[i][0] == reponse[0]) && (casePossibleAJouer[i][1] == reponse[1])) {
-					
+
+		while (true) {
+			int reponseLigne = SimpleInput.getInt("Numéro de ligne : ");
+			int reponseCase = SimpleInput.getInt("Numéro de colonne : ");
+
+			int[] reponse = {reponseLigne - 1, reponseCase - 1};
+
+			for (int i = 0; i < casePossibleAJouer.length; i++) {
+				if (casePossibleAJouer[i][0] == reponse[0] && casePossibleAJouer[i][1] == reponse[1]) {
 					return reponse;
 				}
 			}
+
+			System.out.println("Case invalide, veuillez en choisir une parmi la liste affichée.");
 		}
 	}
+
 }
