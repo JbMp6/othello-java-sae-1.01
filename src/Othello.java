@@ -5,6 +5,9 @@
  */
 
 class Othello{
+	
+// Méthode Principal ------------------------------------------------------------------------------------------
+	
 	void principal(){
 		int[][] tab = tabJeu(8);
 		demarreJeu(tab);
@@ -28,7 +31,7 @@ class Othello{
 			afficheTabJeu(tab);
 			
 			int[][] caseA = caseAdverse(touEnCours, tab);
-			int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab);
+			int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
 			int[] caseJoue = reponsesCaseJoue(caseJouable);
 			
 			placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
@@ -40,6 +43,8 @@ class Othello{
 			}
 		}
 	}
+	
+// Méthode qui gere tout ce qui verification de pions ------------------------------------------------------------------------------------------
 	
 	/**
 	 * Case possible a jouer pour un tour pour x ou o
@@ -131,37 +136,98 @@ class Othello{
 
 		return listeVoisin;
 	}
+	
+	/**
+	 * Vérifie si le joueur peut placer un pion sur la case donnée.
+	 * Une case est jouable si elle encadre au moins un pion adverse
+	 * entre la case testée et un autre pion du joueur dans au moins une direction.
+	 */
+	boolean encadrePions(int x, int y, int joueur, int[][] tab) {
+		boolean estJouable = false;
+		
+		if (tab[x][y] == 0) { // case libre
+			estJouable = verifieDirection(x, y, -1, 0, joueur, tab)  // haut
+				|| verifieDirection(x, y, 1, 0, joueur, tab)   // bas
+				|| verifieDirection(x, y, 0, -1, joueur, tab)  // gauche
+				|| verifieDirection(x, y, 0, 1, joueur, tab)   // droite
+				|| verifieDirection(x, y, -1, -1, joueur, tab) // haut-gauche
+				|| verifieDirection(x, y, -1, 1, joueur, tab)  // haut-droite
+				|| verifieDirection(x, y, 1, -1, joueur, tab)  // bas-gauche
+				|| verifieDirection(x, y, 1, 1, joueur, tab);  // bas-droite
+		}
+		
+		return estJouable;
+	}
+
+	/**
+	 * Vérifie si, dans une direction donnée, la case encadre un ou plusieurs pions adverses.
+	 * L'encadrement est valide si l'on rencontre au moins un pion adverse suivi d'un pion du joueur,
+	 * sans case vide entre les deux.
+	 */
+	boolean verifieDirection(int x, int y, int directionX, int directionY, int joueur, int[][] tab) {
+		int adverse = (joueur == 1) ? 2 : 1;
+		int i = x + directionX;
+		int j = y + directionY;
+		boolean aVuAdverse = false;
+		int n = tab.length;
+
+		while (i >= 0 && i < n && j >= 0 && j < n) {
+			if (tab[i][j] == adverse) {
+				aVuAdverse = true; // on a vu un pion adverse
+			} else if (tab[i][j] == joueur && aVuAdverse) {
+				return true; // encadrement valide
+			} else {
+				return false; // vide ou joueur mais pas d'adversaire avant
+			}
+			i += directionX;
+			j += directionY;
+		}
+		return false; // on a atteint le bord sans encadrement
+	}
 
 	
 	/**
-	 * Verifi si les voisin d'une case sont des case jouable
-	 * @param tabVoisin : liste des voisin d'une case
-	 * @param tabJeu : table de jeu
-	 * @return int[][] matrice des x,y des cases jouable
+	 * Vérifie quelles cases sont réellement jouables pour le joueur.
+	 * Une case est jouable si elle est vide et encadre au moins un pion adverse.
+	 * @param tabVoisin : liste des voisins de pions adverses
+	 * @param tabJeu : plateau de jeu
+	 * @param joueur : joueur en cours (1 ou 2)
+	 * @return int[][] : matrice des cases jouables
 	 */
-	int[][] verifiCaseVoisin(int[][] tabVoisin, int[][] tabJeu) {
-		
+	int[][] verifiCaseVoisin(int[][] tabVoisin, int[][] tabJeu, int joueur) {
 		int compt = 0;
-		
-		for ( int i = 0; i < tabVoisin.length; i++){
-			if ( tabJeu[tabVoisin[i][0]][tabVoisin[i][1]] == 0 ){
-				compt++;
+
+		// Compte combien de cases sont réellement jouables
+		for (int i = 0; i < tabVoisin.length; i++) {
+			int x = tabVoisin[i][0];
+			int y = tabVoisin[i][1];
+			if (x >= 0 && x < tabJeu.length && y >= 0 && y < tabJeu.length) {
+				if (tabJeu[x][y] == 0 && encadrePions(x, y, joueur, tabJeu)) {
+					compt++;
+				}
 			}
 		}
-		
+
 		int[][] caseJouable = new int[compt][2];
-		
 		compt = 0;
-		
-		for ( int i = 0; i < tabVoisin.length; i++){
-			if ( tabJeu[tabVoisin[i][0]][tabVoisin[i][1]] == 0 ){
-				caseJouable[compt] = new int[]{tabVoisin[i][0],tabVoisin[i][1]};
-				compt++;
+
+		// Remplit le tableau avec les cases jouables
+		for (int i = 0; i < tabVoisin.length; i++) {
+			int x = tabVoisin[i][0];
+			int y = tabVoisin[i][1];
+			if (x >= 0 && x < tabJeu.length && y >= 0 && y < tabJeu.length) {
+				if (tabJeu[x][y] == 0 && encadrePions(x, y, joueur, tabJeu)) {
+					caseJouable[compt][0] = x;
+					caseJouable[compt][1] = y;
+					compt++;
+				}
 			}
 		}
-				
+
 		return caseJouable;
 	}
+
+// Méthode qui gere tout ce qui est placement de la case ------------------------------------------------------------------------------------------
 	
 	/**
 	 * Place une case sur le plateau de jeu
@@ -171,9 +237,37 @@ class Othello{
 	 void placeCase(int x, int y, int[][] tab, int joueur){
 		 tab[x][y] = joueur;
 	 }
-		
-	
 
+	
+	/**
+	* Montre quelles cases ont la possibilité d'être joué 
+	* puis demande d'en choisir une
+	* @param 
+	*/
+	
+	int[] reponsesCaseJoue(int[][] casePossibleAJouer) {
+		System.out.println("Voici les cases possibles à jouer (ligne, colonne) : ");
+		for (int i = 0; i < casePossibleAJouer.length; i++) {
+			System.out.println((casePossibleAJouer[i][0] + 1) + ", " + (casePossibleAJouer[i][1] + 1));
+		}
+
+		while (true) {
+			int reponseLigne = SimpleInput.getInt("Numéro de ligne : ");
+			int reponseCase = SimpleInput.getInt("Numéro de colonne : ");
+
+			int[] reponse = {reponseLigne - 1, reponseCase - 1};
+
+			for (int i = 0; i < casePossibleAJouer.length; i++) {
+				if (casePossibleAJouer[i][0] == reponse[0] && casePossibleAJouer[i][1] == reponse[1]) {
+					return reponse;
+				}
+			}
+
+			System.out.println("Case invalide, veuillez en choisir une parmi la liste affichée.");
+		}
+	}
+	
+// Méthode qui gere affichage et créations du plateaux ------------------------------------------------------------------------------------------
 	
 	/**
 	 * Créer un matrice en size * size pour le jeu d'Othello
@@ -233,34 +327,6 @@ class Othello{
 			}
 		}
 		System.out.print("\n");
-	}
-	
-	/**
-	* Montre quelles cases ont la possibilité d'être joué 
-	* puis demande d'en choisir une
-	* @param 
-	*/
-	
-	int[] reponsesCaseJoue(int[][] casePossibleAJouer) {
-		System.out.println("Voici les cases possibles à jouer (ligne, colonne) : ");
-		for (int i = 0; i < casePossibleAJouer.length; i++) {
-			System.out.println((casePossibleAJouer[i][0] + 1) + ", " + (casePossibleAJouer[i][1] + 1));
-		}
-
-		while (true) {
-			int reponseLigne = SimpleInput.getInt("Numéro de ligne : ");
-			int reponseCase = SimpleInput.getInt("Numéro de colonne : ");
-
-			int[] reponse = {reponseLigne - 1, reponseCase - 1};
-
-			for (int i = 0; i < casePossibleAJouer.length; i++) {
-				if (casePossibleAJouer[i][0] == reponse[0] && casePossibleAJouer[i][1] == reponse[1]) {
-					return reponse;
-				}
-			}
-
-			System.out.println("Case invalide, veuillez en choisir une parmi la liste affichée.");
-		}
 	}
 
 }
