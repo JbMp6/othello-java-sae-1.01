@@ -126,7 +126,7 @@ Exécutez: java Othello
 
 ## ✅ CHECKLIST D'IMPLÉMENTATION
 
-- [ ] Créer méthodes de retournement de pions
+- [X] Créer méthodes de retournement de pions
 - [ ] Modifier `demarreJeu()` avec boucle while
 - [ ] Créer `afficheFin()` et `comptePoints()`
 - [ ] Tester une partie complète du début à la fin

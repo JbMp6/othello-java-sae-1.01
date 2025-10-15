@@ -26,15 +26,16 @@ class Othello{
 		
 		int touEnCours = 1;
 		
-		for (int i = 0; i < 9; i++){
+		for (int i = 0; i < 20; i++){
 			System.out.println("\t------------------------------------");
 			afficheTabJeu(tab);
 			
 			int[][] caseA = caseAdverse(touEnCours, tab);
 			int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
-			int[] caseJoue = reponsesCaseJoue(caseJouable);
+			int[] caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
 			
 			placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
+			retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
 			
 			if (touEnCours == 1){
 				touEnCours = 2;
@@ -165,24 +166,32 @@ class Othello{
 	 * sans case vide entre les deux.
 	 */
 	boolean verifieDirection(int x, int y, int directionX, int directionY, int joueur, int[][] tab) {
-		int adverse = (joueur == 1) ? 2 : 1;
+		int adverse = 0;
+		if (joueur == 1) {
+			adverse = 2;
+		} else {
+			adverse = 1;
+		}
 		int i = x + directionX;
 		int j = y + directionY;
 		boolean aVuAdverse = false;
-		int n = tab.length;
-
-		while (i >= 0 && i < n && j >= 0 && j < n) {
+		boolean resultat = false;
+		boolean continuer = true;
+		
+		while (i >= 0 && i < tab.length && j >= 0 && j < tab.length && continuer) {
 			if (tab[i][j] == adverse) {
 				aVuAdverse = true; // on a vu un pion adverse
 			} else if (tab[i][j] == joueur && aVuAdverse) {
-				return true; // encadrement valide
+				resultat = true; // encadrement valide
+				continuer = false;
 			} else {
-				return false; // vide ou joueur mais pas d'adversaire avant
+				continuer = false; // vide ou joueur mais pas d'adversaire avant
 			}
 			i += directionX;
 			j += directionY;
 		}
-		return false; // on a atteint le bord sans encadrement
+		
+		return resultat;
 	}
 
 	
@@ -245,7 +254,13 @@ class Othello{
 	* @param 
 	*/
 	
-	int[] reponsesCaseJoue(int[][] casePossibleAJouer) {
+	int[] reponsesCaseJoue(int[][] casePossibleAJouer, int joueur) {
+		String joueurTexte = "";
+		
+		if (joueur == 1) joueurTexte = "O";
+		else joueurTexte = "X";
+		
+		System.out.println("Au tour des : " + joueurTexte);
 		System.out.println("Voici les cases possibles à jouer (ligne, colonne) : ");
 		for (int i = 0; i < casePossibleAJouer.length; i++) {
 			System.out.println((casePossibleAJouer[i][0] + 1) + ", " + (casePossibleAJouer[i][1] + 1));
@@ -265,6 +280,58 @@ class Othello{
 
 			System.out.println("Case invalide, veuillez en choisir une parmi la liste affichée.");
 		}
+	}
+	
+// Méthode qui gere tout ce qui est retournement de la case ------------------------------------------------------------------------------------------
+	
+	/**
+	 * Retourne les pions adverses dans une direction donnée
+	 * @param x : position ligne de la case jouée
+	 * @param y : position colonne de la case jouée
+	 * @param directionX : direction en x (-1, 0, ou 1)
+	 * @param directionY : direction en y (-1, 0, ou 1)
+	 * @param joueur : numéro du joueur (1 ou 2)
+	 * @param tab : plateau de jeu
+	 */
+	void retourneDansDirection(int x, int y, int directionX, int directionY, int joueur, int[][] tab){
+		
+		int adverse = 0;
+		if (joueur == 1) adverse = 2 ; 
+		else adverse = 1;
+		
+		int i = x + directionX;
+		int j = y + directionY;
+		
+		boolean continuer = true; 
+		
+		while (i >= 0 && i < tab.length && j >= 0 && j < tab.length && continuer){
+			if (tab[i][j] == adverse){
+				tab[i][j] = joueur;
+				i += directionX;
+				j += directionY;
+			}else{
+				continuer = false;
+			}
+		}
+	}
+	
+	/**
+	 * Retourne les pions adverses dans une direction donnée
+	 * @param x : position ligne de la case jouée
+	 * @param y : position colonne de la case jouée
+	 * @param joueur : numéro du joueur (1 ou 2)
+	 * @param tab : plateau de jeu
+	 */
+	void retournePions(int x, int y, int joueur, int[][] tab){
+		if (verifieDirection(x, y, -1, 0, joueur, tab)) retourneDansDirection(x, y, -1, 0, joueur, tab);
+		if (verifieDirection(x, y, 1, 0, joueur, tab)) retourneDansDirection(x, y, 1, 0, joueur, tab);
+		if (verifieDirection(x, y, 0, -1, joueur, tab)) retourneDansDirection(x, y, 0, -1, joueur, tab);
+		if (verifieDirection(x, y, 0, 1, joueur, tab)) retourneDansDirection(x, y, 0, 1, joueur, tab);
+		if (verifieDirection(x, y, -1, -1, joueur, tab)) retourneDansDirection(x, y, -1, -1, joueur, tab);
+		if (verifieDirection(x, y, -1, 1, joueur, tab)) retourneDansDirection(x, y, -1, 1, joueur, tab);
+		if (verifieDirection(x, y, 1, -1, joueur, tab)) retourneDansDirection(x, y, 1, -1, joueur, tab);
+		if (verifieDirection(x, y, 1, 1, joueur, tab)) retourneDansDirection(x, y, 1, 1, joueur, tab);
+		
 	}
 	
 // Méthode qui gere affichage et créations du plateaux ------------------------------------------------------------------------------------------
