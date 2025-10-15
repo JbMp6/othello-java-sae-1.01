@@ -9,13 +9,12 @@ class Othello{
 // Méthode Principal ------------------------------------------------------------------------------------------
 	
 	void principal(){
-		logo();
-		int[][] tab = tabJeu(8);
+		int tailleTab = logo();
+		int[][] tab = tabJeu(tailleTab);
 		demarreJeu1v1(tab);
-		
 	}
 	
-	void logo (){
+	int logo (){
 		System.out.println("");
         System.out.println("     /$$$$$$  /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$       /$$       /$$$$$$  ");
         System.out.println("    /$$__  $$|__  $$__/| $$  | $$| $$_____/| $$      | $$      /$$__  $$ ");
@@ -26,7 +25,8 @@ class Othello{
         System.out.println("   |  $$$$$$/   | $$   | $$  | $$| $$$$$$$$| $$$$$$$$| $$$$$$$$|  $$$$$$/ ");
         System.out.println("    \\______/    |__/   |__/  |__/|________/|________|________/ \\______/  ");
         System.out.print("\n\n\n");
-        SimpleInput.getChar("Appuyer sur une touche puis entré pour commencer !");
+        int taille = SimpleInput.getInt("Sélectionner la taille de votre plateau de jeu (entre 4 et 16) : ");
+        return taille;
 	}
 	
 	/**
@@ -354,14 +354,20 @@ class Othello{
 		
 	}
 	
-// Méthode qui gere affichage et créations du plateaux ------------------------------------------------------------------------------------------
+// Méthode qui gère les conditions d'arrêt du jeu -----------------------------------------------------------------------------------------------
+	
+	boolean tabPlein () {
+		return true;
+	}
+	
+// Méthode qui gère affichage et créations du plateaux ------------------------------------------------------------------------------------------
 	
 	/**
 	 * Créer un matrice en size * size pour le jeu d'Othello
 	 * @param int size : taille de notre matrice 
 	 * @return tab : matrice en size*size
 	 */
-	int[][] tabJeu (int size){
+	int[][] tabJeu(int size){
 		while (!(size >= 4 && size <= 16 && size % 2 == 0)){
 			size = SimpleInput.getInt("Nombre entre 4 et 16 pair pour la taille du plateaux de jeu");
 		}
