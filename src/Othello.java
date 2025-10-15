@@ -9,16 +9,31 @@ class Othello{
 // Méthode Principal ------------------------------------------------------------------------------------------
 	
 	void principal(){
+		logo();
 		int[][] tab = tabJeu(8);
-		demarreJeu(tab);
+		demarreJeu1v1(tab);
 		
+	}
+	
+	void logo (){
+		System.out.println("");
+        System.out.println("     /$$$$$$  /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$       /$$       /$$$$$$  ");
+        System.out.println("    /$$__  $$|__  $$__/| $$  | $$| $$_____/| $$      | $$      /$$__  $$ ");
+        System.out.println("   | $$  \\ $$   | $$   | $$  | $$| $$      | $$      | $$     | $$  \\ $$ ");
+        System.out.println("   | $$  | $$   | $$   | $$$$$$$$| $$$$$   | $$      | $$     | $$  | $$ ");
+        System.out.println("   | $$  | $$   | $$   | $$__  $$| $$__/   | $$      | $$     | $$  | $$ ");
+        System.out.println("   | $$  | $$   | $$   | $$  | $$| $$      | $$      | $$     | $$  | $$ ");
+        System.out.println("   |  $$$$$$/   | $$   | $$  | $$| $$$$$$$$| $$$$$$$$| $$$$$$$$|  $$$$$$/ ");
+        System.out.println("    \\______/    |__/   |__/  |__/|________/|________|________/ \\______/  ");
+        System.out.print("\n\n\n");
+        SimpleInput.getChar("Appuyer sur une touche puis entré pour commencer !");
 	}
 	
 	/**
 	 * Démarre le jeu d'Othello
 	 * @param int[][] tab : taille de notre matrice 
 	 */
-	void demarreJeu (int [][] tab){
+	void demarreJeu1v1(int [][] tab){
 		tab[(tab.length-1)/2][(tab.length-1)/2] = 1;
 		tab[(tab.length-1)/2][(tab.length)/2] = 2;
 		tab[(tab.length)/2][(tab.length-1)/2] = 2;
@@ -27,7 +42,10 @@ class Othello{
 		int touEnCours = 1;
 		
 		for (int i = 0; i < 20; i++){
-			System.out.println("\t------------------------------------");
+			
+			System.out.print("\033[H\033[2J");		//Trouvé sur internet, permet de sauter autant 
+			System.out.flush();						//de ligne qu'il faut pour avoir une nouvel page vierge
+			
 			afficheTabJeu(tab);
 			
 			int[][] caseA = caseAdverse(touEnCours, tab);
@@ -36,6 +54,8 @@ class Othello{
 			
 			placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
 			retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
+			
+			System.out.println("\t------------------------------------");
 			
 			if (touEnCours == 1){
 				touEnCours = 2;
