@@ -127,11 +127,11 @@ Exécutez: java Othello
 ## ✅ CHECKLIST D'IMPLÉMENTATION
 
 - [X] Créer méthodes de retournement de pions
-- [ ] Modifier `demarreJeu()` avec boucle while
+- [X] Modifier `demarreJeu()` avec boucle while
 - [ ] Créer `afficheFin()` et `comptePoints()`
 - [ ] Tester une partie complète du début à la fin
 - [ ] Ajouter affichage des scores intermédiaires
 - [ ] Améliorer les messages des joueurs
 - [ ] Nettoyer les doublons
-- [ ] Tester toutes les situations de passage de tour
+- [X] Tester toutes les situations de passage de tour
 - [ ] Ajouter option rejouer (optionnel)
