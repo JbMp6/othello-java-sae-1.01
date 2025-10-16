@@ -41,28 +41,34 @@ class Othello{
 		
 		int touEnCours = 1;
 		
-		for (int i = 0; i < 20; i++){
-			
-			System.out.print("\033[H\033[2J");		//Trouvé sur internet, permet de sauter autant 
-			System.out.flush();						//de ligne qu'il faut pour avoir une nouvel page vierge
+		int[][] caseA = caseAdverse(touEnCours, tab);
+		int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
+		
+		while(caseJouable.length != 0){
 			
 			afficheTabJeu(tab);
 			
-			int[][] caseA = caseAdverse(touEnCours, tab);
-			int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
 			int[] caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
 			
 			placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
 			retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
-			
-			System.out.println("\t------------------------------------");
 			
 			if (touEnCours == 1){
 				touEnCours = 2;
 			}else{
 				touEnCours = 1;
 			}
+			
+			caseA = caseAdverse(touEnCours, tab);
+			caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
+			
+			System.out.println("\t------------------------------------");
+			
 		}
+		System.out.println("\t----------- Tab de fin -------------");
+		System.out.println("\t------------------------------------");
+		
+		afficheTabJeu(tab);
 	}
 	
 // Méthode qui gere tout ce qui verification de pions ------------------------------------------------------------------------------------------
@@ -356,9 +362,10 @@ class Othello{
 	
 // Méthode qui gère les conditions d'arrêt du jeu -----------------------------------------------------------------------------------------------
 	
-	boolean tabPlein () {
+	boolean tab(){
 		return true;
 	}
+	
 	
 // Méthode qui gère affichage et créations du plateaux ------------------------------------------------------------------------------------------
 	
