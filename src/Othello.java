@@ -44,7 +44,7 @@ class Othello{
 		int[][] caseA = caseAdverse(touEnCours, tab);
 		int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
 		
-		while(caseJouable.length != 0){
+		while(tabEstPasPlein(tab)){
 			
 			afficheTabJeu(tab);
 			
@@ -362,8 +362,16 @@ class Othello{
 	
 // Méthode qui gère les conditions d'arrêt du jeu -----------------------------------------------------------------------------------------------
 	
-	boolean tab(){
-		return true;
+	boolean tabEstPasPlein(int[][] tab){
+		boolean estPlein = true;
+		for ( int i = 0; i < tab.length; i++){
+			for ( int y = 0; y < tab[i].length; y++){
+				if ( tab[i][y] == 0 ) {
+					estPlein = false;
+				}
+			}
+		}
+		return !estPlein;
 	}
 	
 	
