@@ -44,7 +44,10 @@ class Othello{
 		int[][] caseA = caseAdverse(touEnCours, tab);
 		int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
 		
-		while(tabEstPasPlein(tab)){
+		compteur2JoueurBloque = 0;
+		boolean deuxJoueurBloque = true;
+		
+		while(tabEstPasPlein(tab) && deuxJoueurBloque){
 			
 			afficheTabJeu(tab);
 			
