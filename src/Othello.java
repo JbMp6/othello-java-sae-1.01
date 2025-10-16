@@ -219,7 +219,16 @@ class Othello{
 		
 		return resultat;
 	}
-
+	
+	/**
+	 * Retire les doublons des propositions de cases jouables
+	 * @param caseJouable : liste des cases jouables
+	 * 
+	 */
+	 
+	 /**int[][] (int caseJouable, int[][] a) {
+		 return a;
+	 }
 	
 	/**
 	 * Vérifie quelles cases sont réellement jouables pour le joueur.
