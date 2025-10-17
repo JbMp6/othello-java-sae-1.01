@@ -57,16 +57,15 @@ class Othello{
 				compteur2JoueurBloque++;
 				System.out.println("Aucune case jouable. Passer votre tour...");
 			}else{
+				compteur2JoueurBloque = 0;
 				caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
+				placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
+				retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
 			}
 			if ( compteur2JoueurBloque == 2 ){
 				deuxJoueurBloque = false;
 			}
 			
-			
-			
-			placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
-			retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
 			
 			if (touEnCours == 1){
 				touEnCours = 2;
@@ -79,15 +78,17 @@ class Othello{
 			
 			
 							
-			System.out.println("------------------------------------");
+			System.out.println("\n\n\n------------------------------------");
 			
-						int[] points = pointsJoueurs(tab);
-			System.out.println("	Joueur X : " + points[0] + "		Joueur O : " + points[1]);
-			System.out.println();
+			int[] points = pointsJoueurs(tab);
+			
+			System.out.println("Joueur X : " + points[0] + "		Joueur O : " + points[1]);
+			
 			
 		}
+		
 		System.out.println("----------- Tab de fin -------------");
-		System.out.println("------------------------------------");
+		System.out.println();
 		
 		afficheTabJeu(tab);
 	}
@@ -269,9 +270,34 @@ class Othello{
 	 * 
 	 */
 	 
-	int supprimeDoublons(int a) {
-		a = 0;
-		return a;
+	int[][] supprimeDoublons(int[][] caseJouable) {
+		int compteurUnique = 0;
+		for (int i = 0; i < caseJouable.length; i++){
+			boolean diff = true;
+			for (int z = i-1; z >= 0; z--){
+				if ( caseJouable[i][0] == caseJouable[z][0] && caseJouable[i][1] == caseJouable[z][1]){
+					diff = false;
+				}
+			}
+			if (diff) compteurUnique++;
+		}
+		
+		int[][] caseJouableSansDoublons = new int [compteurUnique][2];
+		
+		compteurUnique = 0;
+		for (int i = 0; i < caseJouable.length; i++){
+			boolean diff = true;
+			for (int z = i-1; z >= 0; z--){
+				if ( caseJouable[i][0] == caseJouable[z][0] && caseJouable[i][1] == caseJouable[z][1]){
+					diff = false;
+				}
+			}
+			if (diff){
+				caseJouableSansDoublons[compteurUnique] = caseJouable[i];
+				compteurUnique++;
+			}
+		}
+	 return caseJouableSansDoublons;
 	 }
 	
 	/**
@@ -312,7 +338,7 @@ class Othello{
 			}
 		}
 
-		return caseJouable;
+		return supprimeDoublons(caseJouable);
 	}
 
 // Méthode qui gere tout ce qui est placement de la case ------------------------------------------------------------------------------------------
