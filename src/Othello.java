@@ -44,11 +44,26 @@ class Othello{
 		int[][] caseA = caseAdverse(touEnCours, tab);
 		int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
 		
-		while(tabEstPasPlein(tab)){
+		int compteur2JoueurBloque = 0;
+		boolean deuxJoueurBloque = true;
+		
+		while(tabEstPasPlein(tab) && deuxJoueurBloque){
 			
 			afficheTabJeu(tab);
 			
-			int[] caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
+			int[] caseJoue = {0,0};
+			
+			if ( caseJouable.length == 0 ){
+				compteur2JoueurBloque++;
+				System.out.println("Aucune case jouable. Passer votre tour...");
+			}else{
+				caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
+			}
+			if ( compteur2JoueurBloque == 2 ){
+				deuxJoueurBloque = false;
+			}
+			
+			
 			
 			placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
 			retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
@@ -62,11 +77,13 @@ class Othello{
 			caseA = caseAdverse(touEnCours, tab);
 			caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
 			
-			System.out.println("\t------------------------------------");
+			
+							
+			System.out.println("------------------------------------");
 			
 		}
-		System.out.println("\t----------- Tab de fin -------------");
-		System.out.println("\t------------------------------------");
+		System.out.println("----------- Tab de fin -------------");
+		System.out.println("------------------------------------");
 		
 		afficheTabJeu(tab);
 	}
