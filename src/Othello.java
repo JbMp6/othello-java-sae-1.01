@@ -81,6 +81,10 @@ class Othello{
 							
 			System.out.println("------------------------------------");
 			
+						int[] points = pointsJoueurs(tab);
+			System.out.println("	Joueur X : " + points[0] + "		Joueur O : " + points[1]);
+			System.out.println();
+			
 		}
 		System.out.println("----------- Tab de fin -------------");
 		System.out.println("------------------------------------");
@@ -88,7 +92,29 @@ class Othello{
 		afficheTabJeu(tab);
 	}
 	
-// Méthode qui gere tout ce qui verification de pions ------------------------------------------------------------------------------------------
+// Méthode qui gere tout ce qui est verification des pions ------------------------------------------------------------------------------------------
+	
+	/**
+	 * Compte le nombre de points de chaque joueur en fonction de leur
+	 * nombre de pions sur le plateau
+	 * @param
+	 * 
+	 */
+	int[] pointsJoueurs(int[][] tab) {
+		int pointX = 0;
+		int pointO = 0;
+		for ( int i = 0; i < tab.length; i++){
+			for ( int y = 0; y < tab[i].length; y++){
+				if ( tab[i][y] == 2 ) {
+					pointX++;
+				} else if (tab[i][y] == 1) {
+					pointO++;
+				}
+			}
+		}
+		int[] points = {pointX, pointO};
+		return points;
+	}
 	
 	/**
 	 * Case possible a jouer pour un tour pour x ou o
@@ -243,8 +269,9 @@ class Othello{
 	 * 
 	 */
 	 
-	 /**int[][] (int caseJouable, int[][] a) {
-		 return a;
+	int supprimeDoublons(int a) {
+		a = 0;
+		return a;
 	 }
 	
 	/**
