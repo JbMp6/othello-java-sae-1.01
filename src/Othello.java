@@ -67,11 +67,7 @@ class Othello{
 			}
 			
 			
-			if (touEnCours == 1){
-				touEnCours = 2;
-			}else{
-				touEnCours = 1;
-			}
+			touEnCours = adversere(touEnCours);
 			
 			caseA = caseAdverse(touEnCours, tab);
 			caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
@@ -126,13 +122,9 @@ class Othello{
 	int[][] caseAdverse(int tour, int[][] tab) {
 		
 		int compt = 0;
-		int adverse;
+		int adverse = adversere(tour);
 		
-		if ( tour == 1 ){
-			adverse = 2;
-		}else{
-			adverse = 1;
-		}
+		
 		
 		for ( int i = 0; i < tab.length; i++){
 			for ( int y = 0; y < tab[i].length; y++){
@@ -236,12 +228,8 @@ class Othello{
 	 * sans case vide entre les deux.
 	 */
 	boolean verifieDirection(int x, int y, int directionX, int directionY, int joueur, int[][] tab) {
-		int adverse = 0;
-		if (joueur == 1) {
-			adverse = 2;
-		} else {
-			adverse = 1;
-		}
+		int adverse = adversere(joueur);
+		
 		int i = x + directionX;
 		int j = y + directionY;
 		boolean aVuAdverse = false;
@@ -400,9 +388,7 @@ class Othello{
 	 */
 	void retourneDansDirection(int x, int y, int directionX, int directionY, int joueur, int[][] tab){
 		
-		int adverse = 0;
-		if (joueur == 1) adverse = 2 ; 
-		else adverse = 1;
+		int adverse = adversere(joueur);
 		
 		int i = x + directionX;
 		int j = y + directionY;
@@ -437,6 +423,16 @@ class Othello{
 		if (verifieDirection(x, y, 1, -1, joueur, tab)) retourneDansDirection(x, y, 1, -1, joueur, tab);
 		if (verifieDirection(x, y, 1, 1, joueur, tab)) retourneDansDirection(x, y, 1, 1, joueur, tab);
 		
+	}
+	
+	int adversere (int joueur){
+		int adversere = 0;
+		if (joueur == 1){
+			adversere = 2;
+		}else{
+			adversere = 1;
+		}
+		return adversere;
 	}
 	
 // Méthode qui gère les conditions d'arrêt du jeu -----------------------------------------------------------------------------------------------
