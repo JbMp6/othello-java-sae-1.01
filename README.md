@@ -128,10 +128,10 @@ Exécutez: java Othello
 
 - [X] Créer méthodes de retournement de pions
 - [X] Modifier `demarreJeu()` avec boucle while
-- [ ] Créer `afficheFin()` et `comptePoints()`
-- [ ] Tester une partie complète du début à la fin
-- [ ] Ajouter affichage des scores intermédiaires
+- [X] Créer `afficheFin()` et `comptePoints()`
+- [X] Tester une partie complète du début à la fin
+- [X] Ajouter affichage des scores intermédiaires
 - [ ] Améliorer les messages des joueurs
-- [ ] Nettoyer les doublons
+- [X] Nettoyer les doublons
 - [X] Tester toutes les situations de passage de tour
 - [ ] Ajouter option rejouer (optionnel)
