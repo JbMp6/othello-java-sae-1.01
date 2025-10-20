@@ -9,12 +9,16 @@ class Othello{
 // Méthode Principal ------------------------------------------------------------------------------------------
 	
 	void principal(){
-		int tailleTab = logo();
-		int[][] tab = tabJeu(tailleTab);
-		demarreJeu1v1(tab);
+		int[] info = initialisation();
+		int[][] tab = tabJeu(info[0]);
+		if (info[1] == 1){
+			demarreJeu1v1(tab);
+		}else if (info[1] == 2){
+			demarreJeuRandomBot(tab,info[2]);
+		}
 	}
 	
-	int logo (){
+	int[] initialisation (){
 		System.out.println("");
         System.out.println("     /$$$$$$  /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$       /$$       /$$$$$$  ");
         System.out.println("    /$$__  $$|__  $$__/| $$  | $$| $$_____/| $$      | $$      /$$__  $$ ");
@@ -25,12 +29,20 @@ class Othello{
         System.out.println("   |  $$$$$$/   | $$   | $$  | $$| $$$$$$$$| $$$$$$$$| $$$$$$$$|  $$$$$$/ ");
         System.out.println("    \\______/    |__/   |__/  |__/|________/|________|________/ \\______/  ");
         System.out.print("\n\n\n");
-        int taille = SimpleInput.getInt("Sélectionner la taille de votre plateau de jeu (entre 4 et 16) : ");
-        return taille;
+        int[] info = new int[3];
+        info[0] = SimpleInput.getInt("Sélectionner la taille de votre plateau de jeu (entre 4 et 16) : ");
+        System.out.println("Veuillez sélectionner votre mode de jeu :\n1. 1V1 (Tour par tour sur le clavier\n2. RandomBot");
+        info[1] = SimpleInput.getInt("");
+        if (info[1] > 1){
+			System.out.println("Veuillez sélectionner votre piont ( Les O commence ) :\n1. O\n2. X");
+			info[2] = SimpleInput.getInt("");
+			System.out.println("\n\n\n------------------------------------");
+		}
+        return info;
 	}
 	
 	/**
-	 * Démarre le jeu d'Othello
+	 * Démarre le jeu d'Othello 1V1
 	 * @param int[][] tab : taille de notre matrice 
 	 */
 	void demarreJeu1v1(int [][] tab){
@@ -59,6 +71,71 @@ class Othello{
 			}else{
 				compteur2JoueurBloque = 0;
 				caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
+				placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
+				retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
+			}
+			if ( compteur2JoueurBloque == 2 ){
+				deuxJoueurBloque = false;
+			}
+			
+			
+			touEnCours = adversere(touEnCours);
+			
+			caseA = caseAdverse(touEnCours, tab);
+			caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
+			
+			
+							
+			System.out.println("\n\n\n------------------------------------");
+			
+			int[] points = pointsJoueurs(tab);
+			
+			System.out.println("Joueur X : " + points[0] + "		Joueur O : " + points[1]);
+			
+			
+		}
+		
+		System.out.println("----------- Tab de fin -------------");
+		System.out.println();
+		
+		afficheTabJeu(tab);
+	}
+	
+	/**
+	 * Démarre le jeu d'Othello RamdomBot
+	 * @param int[][] tab : taille de notre matrice
+	 * @param int joueurDebut : joueur qui commence
+	 */
+	void demarreJeuRandomBot(int [][] tab, int joueur){
+		tab[(tab.length-1)/2][(tab.length-1)/2] = 1;
+		tab[(tab.length-1)/2][(tab.length)/2] = 2;
+		tab[(tab.length)/2][(tab.length-1)/2] = 2;
+		tab[(tab.length)/2][(tab.length)/2] = 1;
+		
+		int touEnCours = 1;
+		
+		int[][] caseA = caseAdverse(touEnCours, tab);
+		int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
+		
+		int compteur2JoueurBloque = 0;
+		boolean deuxJoueurBloque = true;
+		
+		while(tabEstPasPlein(tab) && deuxJoueurBloque){
+			
+			afficheTabJeu(tab);
+			
+			int[] caseJoue = {0,0};
+			
+			if ( caseJouable.length == 0 ){
+				compteur2JoueurBloque++;
+				System.out.println("Aucune case jouable. Passer votre tour...");
+			}else{
+				compteur2JoueurBloque = 0;
+				if ( touEnCours == joueur ){
+					caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
+				}else{
+					caseJoue = caseJouable[(int)(Math.random() * (caseJouable.length-1))];
+				}
 				placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
 				retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
 			}
