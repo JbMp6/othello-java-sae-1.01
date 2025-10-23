@@ -100,6 +100,8 @@ class Othello{
 		System.out.println();
 		
 		afficheTabJeu(tab);
+		
+		if ( SimpleInput.getInt("Voulez-vous rejouez ? Si oui, appuyez sur 1") == 1) {principal();}
 	}
 	
 	/**
@@ -166,6 +168,8 @@ class Othello{
 		System.out.println();
 		
 		afficheTabJeu(tab);
+		
+		if ( SimpleInput.getInt("Voulez-vous rejouez ? Si oui, appuyez sur 1") == 1) {principal();}
 	}
 			
 	void testCaseVoisin(){
