@@ -136,6 +136,7 @@ class Othello{
 					caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
 				}else{
 					caseJoue = caseJouable[(int)(Math.random() * (caseJouable.length-1))];
+					SimpleInput.getChar("Le bot va joué en " + caseJoue[0] + ", " + caseJoue[1] + ". Appuyer sur une lettre pour continuer ...");
 				}
 				placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
 				retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
