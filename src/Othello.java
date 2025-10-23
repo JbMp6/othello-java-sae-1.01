@@ -6,7 +6,7 @@
 
 class Othello{
 	
-// Méthode Principal ------------------------------------------------------------------------------------------
+// Methode Principal ------------------------------------------------------------------------------------------
 	
 	void principal(){
 		int[] info = initialisation();
@@ -31,11 +31,11 @@ class Othello{
         System.out.println("    \\______/    |__/   |__/  |__/|________/|________|________/ \\______/  ");
         System.out.print("\n\n\n");
         int[] info = new int[3];
-        info[0] = SimpleInput.getInt("Sélectionner la taille de votre plateau de jeu (entre 4 et 16) : ");
-        System.out.println("Veuillez sélectionner votre mode de jeu :\n1. 1V1 (Tour par tour sur le clavier)\n2. RandomBot");
+        info[0] = SimpleInput.getInt("Selectionner la taille de votre plateau de jeu (entre 4 et 16) : ");
+        System.out.println("Veuillez selectionner votre mode de jeu :\n1. 1V1 (Tour par tour sur le clavier)\n2. RandomBot");
         info[1] = SimpleInput.getInt("");
         if (info[1] > 1){
-			System.out.println("Veuillez sélectionner votre piont ( Les O commence ) :\n1. O\n2. X");
+			System.out.println("Veuillez selectionner votre piont ( Les O commence ) :\n1. O\n2. X");
 			info[2] = SimpleInput.getInt("");
 			System.out.println("\n\n\n------------------------------------");
 		}
@@ -43,7 +43,7 @@ class Othello{
 	}
 	
 	/**
-	 * Démarre le jeu d'Othello 1V1
+	 * Demarre le jeu d'Othello 1V1
 	 * @param int[][] tab : taille de notre matrice 
 	 */
 	void demarreJeu1v1(int [][] tab){
@@ -105,7 +105,7 @@ class Othello{
 	}
 	
 	/**
-	 * Démarre le jeu d'Othello RamdomBot
+	 * Demarre le jeu d'Othello RamdomBot
 	 * @param int[][] tab : taille de notre matrice
 	 * @param int joueurDebut : joueur qui commence
 	 */
@@ -138,7 +138,7 @@ class Othello{
 					caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
 				}else{
 					caseJoue = caseJouable[(int)(Math.random() * (caseJouable.length-1))];
-					SimpleInput.getChar("Le bot va joué en " + caseJoue[0] + ", " + caseJoue[1] + ". Appuyer sur une lettre pour continuer ...");
+					SimpleInput.getChar("Le bot va joue en " + caseJoue[0] + ", " + caseJoue[1] + ". Appuyer sur une lettre pour continuer ...");
 				}
 				placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
 				retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
@@ -223,7 +223,7 @@ class Othello{
 			System.err.println("ERREUR");
 		}
 	}
-// Méthode qui gere tout ce qui est verification des pions ------------------------------------------------------------------------------------------
+// Methode qui gere tout ce qui est verification des pions ------------------------------------------------------------------------------------------
 	
 	/**
 	 * Compte le nombre de points de chaque joueur en fonction de leur
@@ -335,9 +335,9 @@ class Othello{
 	}
 	
 	/**
-	 * Vérifie si le joueur peut placer un pion sur la case donnée.
+	 * Verifie si le joueur peut placer un pion sur la case donnee.
 	 * Une case est jouable si elle encadre au moins un pion adverse
-	 * entre la case testée et un autre pion du joueur dans au moins une direction.
+	 * entre la case testee et un autre pion du joueur dans au moins une direction.
 	 */
 	boolean encadrePions(int x, int y, int joueur, int[][] tab) {
 		boolean estJouable = false;
@@ -357,7 +357,7 @@ class Othello{
 	}
 
 	/**
-	 * Vérifie si, dans une direction donnée, la case encadre un ou plusieurs pions adverses.
+	 * Verifie si, dans une direction donnee, la case encadre un ou plusieurs pions adverses.
 	 * L'encadrement est valide si l'on rencontre au moins un pion adverse suivi d'un pion du joueur,
 	 * sans case vide entre les deux.
 	 */
@@ -423,7 +423,7 @@ class Othello{
 	 }
 	
 	/**
-	 * Vérifie quelles cases sont réellement jouables pour le joueur.
+	 * Verifie quelles cases sont reellement jouables pour le joueur.
 	 * Une case est jouable si elle est vide et encadre au moins un pion adverse.
 	 * @param tabVoisin : liste des voisins de pions adverses
 	 * @param tabJeu : plateau de jeu
@@ -433,7 +433,7 @@ class Othello{
 	int[][] verifiCaseVoisin(int[][] tabVoisin, int[][] tabJeu, int joueur) {
 		int compt = 0;
 
-		// Compte combien de cases sont réellement jouables
+		// Compte combien de cases sont reellement jouables
 		for (int i = 0; i < tabVoisin.length; i++) {
 			int x = tabVoisin[i][0];
 			int y = tabVoisin[i][1];
@@ -463,7 +463,7 @@ class Othello{
 		return supprimeDoublons(caseJouable);
 	}
 
-// Méthode qui gere tout ce qui est placement de la case ------------------------------------------------------------------------------------------
+// Methode qui gere tout ce qui est placement de la case ------------------------------------------------------------------------------------------
 	
 	/**
 	 * Place une case sur le plateau de jeu
@@ -476,7 +476,7 @@ class Othello{
 
 	
 	/**
-	* Montre quelles cases ont la possibilité d'être joué 
+	* Montre quelles cases ont la possibilite d'être joue 
 	* puis demande d'en choisir une
 	* @param 
 	*/
@@ -488,14 +488,14 @@ class Othello{
 		else joueurTexte = "X";
 		
 		System.out.println("Au tour des : " + joueurTexte);
-		System.out.println("Voici les cases possibles à jouer (ligne, colonne) : ");
+		System.out.println("Voici les cases possibles a jouer (ligne, colonne) : ");
 		for (int i = 0; i < casePossibleAJouer.length; i++) {
 			System.out.println((casePossibleAJouer[i][0] + 1) + ", " + (casePossibleAJouer[i][1] + 1));
 		}
 
 		while (true) {
-			int reponseLigne = SimpleInput.getInt("Numéro de ligne : ");
-			int reponseCase = SimpleInput.getInt("Numéro de colonne : ");
+			int reponseLigne = SimpleInput.getInt("Numero de ligne : ");
+			int reponseCase = SimpleInput.getInt("Numero de colonne : ");
 
 			int[] reponse = {reponseLigne - 1, reponseCase - 1};
 
@@ -505,19 +505,19 @@ class Othello{
 				}
 			}
 
-			System.out.println("Case invalide, veuillez en choisir une parmi la liste affichée.");
+			System.out.println("Case invalide, veuillez en choisir une parmi la liste affichee.");
 		}
 	}
 	
-// Méthode qui gere tout ce qui est retournement de la case ------------------------------------------------------------------------------------------
+// Methode qui gere tout ce qui est retournement de la case ------------------------------------------------------------------------------------------
 	
 	/**
-	 * Retourne les pions adverses dans une direction donnée
-	 * @param x : position ligne de la case jouée
-	 * @param y : position colonne de la case jouée
+	 * Retourne les pions adverses dans une direction donnee
+	 * @param x : position ligne de la case jouee
+	 * @param y : position colonne de la case jouee
 	 * @param directionX : direction en x (-1, 0, ou 1)
 	 * @param directionY : direction en y (-1, 0, ou 1)
-	 * @param joueur : numéro du joueur (1 ou 2)
+	 * @param joueur : numero du joueur (1 ou 2)
 	 * @param tab : plateau de jeu
 	 */
 	void retourneDansDirection(int x, int y, int directionX, int directionY, int joueur, int[][] tab){
@@ -541,10 +541,10 @@ class Othello{
 	}
 	
 	/**
-	 * Retourne les pions adverses dans une direction donnée
-	 * @param x : position ligne de la case jouée
-	 * @param y : position colonne de la case jouée
-	 * @param joueur : numéro du joueur (1 ou 2)
+	 * Retourne les pions adverses dans une direction donnee
+	 * @param x : position ligne de la case jouee
+	 * @param y : position colonne de la case jouee
+	 * @param joueur : numero du joueur (1 ou 2)
 	 * @param tab : plateau de jeu
 	 */
 	void retournePions(int x, int y, int joueur, int[][] tab){
@@ -569,7 +569,7 @@ class Othello{
 		return adversere;
 	}
 	
-// Méthode qui gère les conditions d'arrêt du jeu -----------------------------------------------------------------------------------------------
+// Methode qui gère les conditions d'arrêt du jeu -----------------------------------------------------------------------------------------------
 	
 	boolean tabEstPasPlein(int[][] tab){
 		boolean estPlein = true;
@@ -584,10 +584,10 @@ class Othello{
 	}
 	
 	
-// Méthode qui gère affichage et créations du plateaux ------------------------------------------------------------------------------------------
+// Methode qui gère affichage et creations du plateaux ------------------------------------------------------------------------------------------
 	
 	/**
-	 * Créer un matrice en size * size pour le jeu d'Othello
+	 * Creer un matrice en size * size pour le jeu d'Othello
 	 * @param int size : taille de notre matrice 
 	 * @return tab : matrice en size*size
 	 */
