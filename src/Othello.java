@@ -32,7 +32,7 @@ class Othello{
         System.out.print("\n\n\n");
         int[] info = new int[3];
         info[0] = SimpleInput.getInt("Sélectionner la taille de votre plateau de jeu (entre 4 et 16) : ");
-        System.out.println("Veuillez sélectionner votre mode de jeu :\n1. 1V1 (Tour par tour sur le clavier)\n2. RandomBot\n3. testCaseVoisin");
+        System.out.println("Veuillez sélectionner votre mode de jeu :\n1. 1V1 (Tour par tour sur le clavier)\n2. RandomBot");
         info[1] = SimpleInput.getInt("");
         if (info[1] > 1){
 			System.out.println("Veuillez sélectionner votre piont ( Les O commence ) :\n1. O\n2. X");
