@@ -19,6 +19,7 @@ class Othello{
 	}
 	
 	int[] initialisation (){
+		testCaseVoisin();
 		System.out.println("");
         System.out.println("     /$$$$$$  /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$       /$$       /$$$$$$  ");
         System.out.println("    /$$__  $$|__  $$__/| $$  | $$| $$_____/| $$      | $$      /$$__  $$ ");
@@ -31,7 +32,7 @@ class Othello{
         System.out.print("\n\n\n");
         int[] info = new int[3];
         info[0] = SimpleInput.getInt("Sélectionner la taille de votre plateau de jeu (entre 4 et 16) : ");
-        System.out.println("Veuillez sélectionner votre mode de jeu :\n1. 1V1 (Tour par tour sur le clavier\n2. RandomBot");
+        System.out.println("Veuillez sélectionner votre mode de jeu :\n1. 1V1 (Tour par tour sur le clavier)\n2. RandomBot\n3. testCaseVoisin");
         info[1] = SimpleInput.getInt("");
         if (info[1] > 1){
 			System.out.println("Veuillez sélectionner votre piont ( Les O commence ) :\n1. O\n2. X");
@@ -165,7 +166,58 @@ class Othello{
 		
 		afficheTabJeu(tab);
 	}
-	
+			
+	void testCaseVoisin(){
+		System.out.println ();
+		System.out.println ("*** testCaseVoisin()");
+		
+		int[][] voisins_2_2 = {{1,2}, {1,3}, {2,3}, {3,3}, {3,2}, {3,1}, {2,1}, {1,1}};
+		testCasCaseVoisin(2, 2, voisins_2_2);
+		
+		int[][] voisins_4_4 = {{3,4}, {3,5}, {4,5}, {5,5}, {5,4}, {5,3}, {4,3}, {3,3}};
+		testCasCaseVoisin(4, 4, voisins_4_4);
+		
+		int[][] voisins_0_0 = {{-1,0}, {-1,1}, {0,1}, {1,1}, {1,0}, {1,-1}, {0,-1}, {-1,-1}};
+		testCasCaseVoisin(0, 0, voisins_0_0);
+	}
+
+	void testCasCaseVoisin(int x, int y, int[][] caseVoisinsAttendu) {
+		System.out.print("CaseVoisin (" + x + ", " + y + ")\t= ");
+		
+		int[][] resExec = caseVoisin(x, y);
+		
+		System.out.print("[");
+		for (int i = 0; i < resExec.length; i++) {
+			System.out.print("[");
+			for (int j = 0; j < resExec[i].length; j++) {
+				System.out.print(resExec[i][j]);
+				if (j < resExec[i].length - 1) System.out.print(", ");
+			}
+			System.out.print("]");
+			if (i < resExec.length - 1) System.out.print(", ");
+		}
+		System.out.print("]\t : ");
+		
+		boolean estEgal = (resExec.length == caseVoisinsAttendu.length);
+		
+		int i = 0;
+		while (i < resExec.length && estEgal) {
+			estEgal = (resExec[i].length == caseVoisinsAttendu[i].length);
+			
+			int j = 0;
+			while (j < resExec[i].length && estEgal) {
+				estEgal = (resExec[i][j] == caseVoisinsAttendu[i][j]);
+				j++;
+			}
+			i++;
+		}
+		
+		if (estEgal) {
+			System.out.println("OK");
+		} else {
+			System.err.println("ERREUR");
+		}
+	}
 // Méthode qui gere tout ce qui est verification des pions ------------------------------------------------------------------------------------------
 	
 	/**
