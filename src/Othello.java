@@ -15,6 +15,8 @@ class Othello{
 			demarreJeu1v1(tab);
 		}else if (info[1] == 2){
 			demarreJeuRandomBot(tab,info[2]);
+		}else if (info[1] == 3){
+			demarreJeuRandomBotPlus(tab,info[2]);
 		}
 	}
 	
@@ -32,10 +34,10 @@ class Othello{
         System.out.print("\n\n\n");
         int[] info = new int[3];
         info[0] = SimpleInput.getInt("Selectionner la taille de votre plateau de jeu (entre 4 et 16) : ");
-        System.out.println("Veuillez selectionner votre mode de jeu :\n1. 1V1 (Tour par tour sur le clavier)\n2. RandomBot");
+        System.out.println("Veuillez selectionner votre mode de jeu :\n1. 1V1 (Tour par tour sur le clavier)\n2. RandomBot\n3. RandomBot+ (Prend le coup qui rapport le plus de point)");
         info[1] = SimpleInput.getInt("");
         if (info[1] > 1){
-			System.out.println("Veuillez selectionner votre piont ( Les O commence ) :\n1. O\n2. X");
+			System.out.println("Veuillez selectionner votre pion ( Les O commence ) :\n1. O\n2. X");
 			info[2] = SimpleInput.getInt("");
 			System.out.println("\n\n\n------------------------------------");
 		}
@@ -138,7 +140,76 @@ class Othello{
 					caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
 				}else{
 					caseJoue = caseJouable[(int)(Math.random() * (caseJouable.length-1))];
-					SimpleInput.getChar("Le bot va joue en " + caseJoue[0] + ", " + caseJoue[1] + ". Appuyer sur une lettre pour continuer ...");
+					SimpleInput.getChar("Le bot va joue. Appuyer sur une lettre pour continuer ...");
+				}
+				placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
+				retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
+			}
+			if ( compteur2JoueurBloque == 2 ){
+				deuxJoueurBloque = false;
+			}
+			
+			
+			touEnCours = adversere(touEnCours);
+			
+			caseA = caseAdverse(touEnCours, tab);
+			caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
+			
+			
+							
+			System.out.println("\n\n\n------------------------------------");
+			
+			int[] points = pointsJoueurs(tab);
+			
+			System.out.println("Joueur X : " + points[0] + "		Joueur O : " + points[1]);
+			
+			
+		}
+		
+		System.out.println("----------- Tab de fin -------------");
+		System.out.println();
+		
+		afficheTabJeu(tab);
+		
+		if ( SimpleInput.getInt("Voulez-vous rejouez ? Si oui, appuyez sur 1") == 1) {principal();}
+	}
+	
+	/**
+	 * Demarre le jeu d'Othello RamdomBot+
+	 * @param int[][] tab : taille de notre matrice
+	 * @param int joueurDebut : joueur qui commence
+	 */
+	void demarreJeuRandomBotPlus(int [][] tab, int joueur){
+		tab[(tab.length-1)/2][(tab.length-1)/2] = 1;
+		tab[(tab.length-1)/2][(tab.length)/2] = 2;
+		tab[(tab.length)/2][(tab.length-1)/2] = 2;
+		tab[(tab.length)/2][(tab.length)/2] = 1;
+		
+		int touEnCours = 1;
+		
+		int[][] caseA = caseAdverse(touEnCours, tab);
+		int[][] caseJouable = verifiCaseVoisin(listeCaseVoisin(caseA),tab,touEnCours);
+		
+		int compteur2JoueurBloque = 0;
+		boolean deuxJoueurBloque = true;
+		
+		while(tabEstPasPlein(tab) && deuxJoueurBloque){
+			
+			afficheTabJeu(tab);
+			
+			int[] caseJoue = {0,0};
+			
+			if ( caseJouable.length == 0 ){
+				compteur2JoueurBloque++;
+				System.out.println("Aucune case jouable. Passer votre tour...");
+			}else{
+				compteur2JoueurBloque = 0;
+				if ( touEnCours == joueur ){
+					caseJoue = reponsesCaseJoue(caseJouable, touEnCours);
+				}else{
+					caseJouable = meilleuresCases(caseJouable, tab, touEnCours);
+					caseJoue = caseJouable[(int)(Math.random() * (caseJouable.length-1))];
+					SimpleInput.getChar("Le bot va joue. Appuyer sur une lettre pour continuer ...");
 				}
 				placeCase( caseJoue[0], caseJoue[1], tab, touEnCours);
 				retournePions(caseJoue[0], caseJoue[1], touEnCours, tab);
@@ -335,56 +406,64 @@ class Othello{
 	}
 	
 	/**
-	 * Verifie si le joueur peut placer un pion sur la case donnee.
+	 * Vérifie si le joueur peut placer un pion sur la case donnée.
 	 * Une case est jouable si elle encadre au moins un pion adverse
-	 * entre la case testee et un autre pion du joueur dans au moins une direction.
+	 * entre la case testée et un autre pion du joueur dans au moins une direction.
 	 */
 	boolean encadrePions(int x, int y, int joueur, int[][] tab) {
 		boolean estJouable = false;
-		
+
 		if (tab[x][y] == 0) { // case libre
-			estJouable = verifieDirection(x, y, -1, 0, joueur, tab)  // haut
-				|| verifieDirection(x, y, 1, 0, joueur, tab)   // bas
-				|| verifieDirection(x, y, 0, -1, joueur, tab)  // gauche
-				|| verifieDirection(x, y, 0, 1, joueur, tab)   // droite
-				|| verifieDirection(x, y, -1, -1, joueur, tab) // haut-gauche
-				|| verifieDirection(x, y, -1, 1, joueur, tab)  // haut-droite
-				|| verifieDirection(x, y, 1, -1, joueur, tab)  // bas-gauche
-				|| verifieDirection(x, y, 1, 1, joueur, tab);  // bas-droite
+			estJouable = (verifieDirection(x, y, -1, 0, joueur, tab) != 0)  // haut
+				|| (verifieDirection(x, y, 1, 0, joueur, tab) != 0)   // bas
+				|| (verifieDirection(x, y, 0, -1, joueur, tab) != 0)  // gauche
+				|| (verifieDirection(x, y, 0, 1, joueur, tab) != 0)   // droite
+				|| (verifieDirection(x, y, -1, -1, joueur, tab) != 0) // haut-gauche
+				|| (verifieDirection(x, y, -1, 1, joueur, tab) != 0)  // haut-droite
+				|| (verifieDirection(x, y, 1, -1, joueur, tab) != 0)  // bas-gauche
+				|| (verifieDirection(x, y, 1, 1, joueur, tab) != 0);  // bas-droite
 		}
-		
+
 		return estJouable;
 	}
 
+
 	/**
-	 * Verifie si, dans une direction donnee, la case encadre un ou plusieurs pions adverses.
-	 * L'encadrement est valide si l'on rencontre au moins un pion adverse suivi d'un pion du joueur,
-	 * sans case vide entre les deux.
+	 * Vérifie, dans une direction donnée, si la case encadre un ou plusieurs pions adverses.
+	 * Renvoie le nombre de pions adverses encadrés si l'encadrement est valide,
+	 * sinon renvoie 0.
 	 */
-	boolean verifieDirection(int x, int y, int directionX, int directionY, int joueur, int[][] tab) {
+	int verifieDirection(int x, int y, int directionX, int directionY, int joueur, int[][] tab) {
 		int adverse = adversere(joueur);
-		
 		int i = x + directionX;
 		int j = y + directionY;
-		boolean aVuAdverse = false;
-		boolean resultat = false;
+		int nbPionsEncadres = 0;
+		boolean valide = false;
 		boolean continuer = true;
-		
+
 		while (i >= 0 && i < tab.length && j >= 0 && j < tab.length && continuer) {
 			if (tab[i][j] == adverse) {
-				aVuAdverse = true; // on a vu un pion adverse
-			} else if (tab[i][j] == joueur && aVuAdverse) {
-				resultat = true; // encadrement valide
+				nbPionsEncadres++; // on compte les pions adverses
+			} else if (tab[i][j] == joueur) {
+				if (nbPionsEncadres > 0) {
+					valide = true; // encadrement valide
+				}
 				continuer = false;
-			} else {
-				continuer = false; // vide ou joueur mais pas d'adversaire avant
+			} else { // case vide
+				continuer = false;
 			}
+
 			i += directionX;
 			j += directionY;
 		}
-		
-		return resultat;
+
+		if (!valide) {
+			nbPionsEncadres = 0; // si pas valide, on remet à 0
+		}
+
+		return nbPionsEncadres;
 	}
+
 	
 	/**
 	 * Retire les doublons des propositions de cases jouables
@@ -462,6 +541,57 @@ class Othello{
 
 		return supprimeDoublons(caseJouable);
 	}
+
+	/**
+	 * Renvoie la liste des cases jouables ayant le maximum de pions retournés.
+	 * Utilise verifieDirection() pour calculer les points de chaque coup.
+	 * 
+	 * @param casesJouables tableau des coordonnées des cases jouables : [[x, y], ...]
+	 * @param tab plateau de jeu
+	 * @param joueur joueur courant (1 ou 2)
+	 * @return int[][] tableau des cases ayant le maximum de points
+	 */
+	int[][] meilleuresCases(int[][] casesJouables, int[][] tab, int joueur) {
+		int[] totalPoints = new int[casesJouables.length];
+		int max = 0;
+
+		for (int i = 0; i < casesJouables.length; i++) {
+			int x = casesJouables[i][0];
+			int y = casesJouables[i][1];
+
+			int score = 0;
+			score += verifieDirection(x, y, -1, 0, joueur, tab);
+			score += verifieDirection(x, y, 1, 0, joueur, tab);
+			score += verifieDirection(x, y, 0, -1, joueur, tab);
+			score += verifieDirection(x, y, 0, 1, joueur, tab);
+			score += verifieDirection(x, y, -1, -1, joueur, tab);
+			score += verifieDirection(x, y, -1, 1, joueur, tab);
+			score += verifieDirection(x, y, 1, -1, joueur, tab);
+			score += verifieDirection(x, y, 1, 1, joueur, tab);
+
+			totalPoints[i] = score;
+			if (score > max) max = score;
+		}
+
+		int compteur = 0;
+		for (int i = 0; i < totalPoints.length; i++) {
+			if (totalPoints[i] == max) compteur++;
+		}
+
+		int[][] meilleures = new int[compteur][2];
+		int index = 0;
+
+		for (int i = 0; i < totalPoints.length; i++) {
+			if (totalPoints[i] == max) {
+				meilleures[index][0] = casesJouables[i][0];
+				meilleures[index][1] = casesJouables[i][1];
+				index++;
+			}
+		}
+
+		return meilleures;
+	}
+
 
 // Methode qui gere tout ce qui est placement de la case ------------------------------------------------------------------------------------------
 	
@@ -548,14 +678,14 @@ class Othello{
 	 * @param tab : plateau de jeu
 	 */
 	void retournePions(int x, int y, int joueur, int[][] tab){
-		if (verifieDirection(x, y, -1, 0, joueur, tab)) retourneDansDirection(x, y, -1, 0, joueur, tab);
-		if (verifieDirection(x, y, 1, 0, joueur, tab)) retourneDansDirection(x, y, 1, 0, joueur, tab);
-		if (verifieDirection(x, y, 0, -1, joueur, tab)) retourneDansDirection(x, y, 0, -1, joueur, tab);
-		if (verifieDirection(x, y, 0, 1, joueur, tab)) retourneDansDirection(x, y, 0, 1, joueur, tab);
-		if (verifieDirection(x, y, -1, -1, joueur, tab)) retourneDansDirection(x, y, -1, -1, joueur, tab);
-		if (verifieDirection(x, y, -1, 1, joueur, tab)) retourneDansDirection(x, y, -1, 1, joueur, tab);
-		if (verifieDirection(x, y, 1, -1, joueur, tab)) retourneDansDirection(x, y, 1, -1, joueur, tab);
-		if (verifieDirection(x, y, 1, 1, joueur, tab)) retourneDansDirection(x, y, 1, 1, joueur, tab);
+		if (verifieDirection(x, y, -1, 0, joueur, tab) != 0) retourneDansDirection(x, y, -1, 0, joueur, tab);
+		if (verifieDirection(x, y, 1, 0, joueur, tab) != 0) retourneDansDirection(x, y, 1, 0, joueur, tab);
+		if (verifieDirection(x, y, 0, -1, joueur, tab) != 0) retourneDansDirection(x, y, 0, -1, joueur, tab);
+		if (verifieDirection(x, y, 0, 1, joueur, tab) != 0) retourneDansDirection(x, y, 0, 1, joueur, tab);
+		if (verifieDirection(x, y, -1, -1, joueur, tab) != 0) retourneDansDirection(x, y, -1, -1, joueur, tab);
+		if (verifieDirection(x, y, -1, 1, joueur, tab) != 0) retourneDansDirection(x, y, -1, 1, joueur, tab);
+		if (verifieDirection(x, y, 1, -1, joueur, tab) != 0) retourneDansDirection(x, y, 1, -1, joueur, tab);
+		if (verifieDirection(x, y, 1, 1, joueur, tab) != 0) retourneDansDirection(x, y, 1, 1, joueur, tab);
 		
 	}
 	
