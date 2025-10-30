@@ -8,6 +8,9 @@ class Othello{
 	
 // Methode Principal ------------------------------------------------------------------------------------------
 	
+	/**
+	 * Démarre tout le programme
+	 */
 	void principal(){
 		int[] info = initialisation();
 		int[][] tab = tabJeu(info[0]);
